@@ -51,13 +51,75 @@ const AnimatedStat = ({ value }: { value: string }) => {
 
 /** Preview 4 — "Brutalist Industrial": Raw, bold typography, asymmetric layout, exposed grid lines */
 const PreviewFour = () => {
+
+
+  const SplitServices = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <div className="grid md:grid-cols-2 gap-10 items-stretch">
+
+      {/* LEFT SIDE — SERVICE LIST */}
+      <div className="flex flex-col border border-steel/20">
+        {services.map((s, i) => (
+          <div
+            key={s.title}
+            onMouseEnter={() => setActiveIndex(i)}
+            className={`p-6 sm:p-8 cursor-pointer transition-all border-b border-steel/10 
+              ${activeIndex === i ? "bg-navy-light text-white" : "bg-foreground text-steel hover:bg-navy/40"}
+            `}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
+                {s.title}
+              </h3>
+              <span className="text-primary/40 font-bold text-lg">
+                0{i + 1}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* RIGHT SIDE — ACTIVE CONTENT */}
+      <div className="relative border-2 border-primary bg-[#0d1220] p-8 sm:p-10 flex flex-col justify-between min-h-[350px]">
+
+        <div>
+          <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-3">
+            Service Overview
+          </p>
+
+          <h3 className="font-display text-3xl sm:text-4xl font-black mb-4">
+            {services[activeIndex].title}
+          </h3>
+
+          <p className="text-steel text-base sm:text-lg leading-relaxed">
+            {services[activeIndex].description}
+          </p>
+        </div>
+
+        <div className="mt-8">
+          <Link
+            to={`/${services[activeIndex].id}`}
+            className="inline-flex items-center gap-2 uppercase tracking-wider font-bold text-black bg-primary py-3 px-6 border-2 border-secondary-foreground hover:bg-gold-light transition-colors"
+          >
+            Learn More
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
   return (
     <div className="min-h-screen bg-foreground font-body text-secondary-foreground overflow-x-hidden">
       {/* Hero — left-aligned with overlaid stats on right */}
       <section className="relative overflow-hidden h-[calc(100dvh-76px)] sm:h-auto sm:min-h-screen md:min-h-[80vh] lg:min-h-[90vh]">
         <img src={heroImg} alt="Industrial site" className="absolute inset-0 w-full h-full object-cover object-center sm:object-top" />
         <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, hsla(220,25%,8%,0.92) 0%, hsla(220,25%,8%,0.5) 100%)" }} />
-        
+
         {/* Desktop stats overlay — positioned absolutely on hero */}
         <div className="hidden lg:flex absolute top-1/3 lg:top-[34%] right-10 transform -translate-y-0 lg:-translate-y-1/4 flex-col h-auto items-start justify-start pointer-events-none gap-6 z-20">
           {stats.map((s, i) => (
@@ -106,7 +168,7 @@ const PreviewFour = () => {
       </section>
 
       {/* Stats on mobile — next section after hero */}
-      <section className="lg:hidden bg-navy/80 backdrop-blur-sm border-t border-steel/20 pt-6"> 
+      <section className="lg:hidden bg-navy/80 backdrop-blur-sm border-t border-steel/20 pt-6">
         <div className="container mx-auto px-6 py-12">
           <h3 className="text-primary text-sm uppercase tracking-[0.3em] font-bold mb-8">Our Impact</h3>
           <div className="grid grid-cols-2 gap-8">
@@ -171,35 +233,23 @@ const PreviewFour = () => {
       </section>
 
       {/* Services — horizontal scroll cards */}
+      {/* Services — Split Panel Layout */}
       <section className="py-20 border-b border-steel/10">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-0">
-            <div>
-              <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-2">Our Expertise</p>
-              <h2 className="font-display text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold">WHAT WE DO</h2>
-            </div>
-            <div className="hidden md:block h-px w-1/3 bg-steel/20" />
+
+          {/* Heading */}
+          <div className="mb-12">
+            <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-2">
+              Our Expertise
+            </p>
+            <h2 className="font-display text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold">
+              WHAT WE DO
+            </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-steel/10">
-            {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                variants={fadeUp}
-                className="bg-foreground p-12 md:p-14 group hover:bg-navy-light transition-colors min-h-[18rem]"
-              >
-                <span className="text-primary/30 font-display text-5xl md:text-6xl font-extrabold">0{i + 1}</span>
-                <h3 className="font-display text-2xl md:text-3xl font-black mt-4 mb-3">{s.title}</h3>
-                <p className="text-steel text-base md:text-lg leading-relaxed">{s.description}</p>
-                <Link to={`/${s.id}`} className="text-primary text-sm font-bold mt-6 inline-flex items-center gap-1 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
-                  Learn More <ArrowRight className="w-3 h-3" />
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+
+          {/* Split Layout */}
+          <SplitServices />
+
         </div>
       </section>
 
