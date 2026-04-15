@@ -1,4 +1,10 @@
-import { motion, animate, useMotionValue, useTransform, useInView } from "framer-motion";
+import {
+  motion,
+  animate,
+  useMotionValue,
+  useTransform,
+  useInView,
+} from "framer-motion";
 import { services, stats } from "@/data/siteData";
 import { clientsData } from "@/data/clientsData";
 import heroImg from "@/assets/hero-nightshift.jpg";
@@ -10,7 +16,11 @@ import { useEffect, useRef, useState } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6 } }),
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6 },
+  }),
 };
 
 const AnimatedStat = ({ value }: { value: string }) => {
@@ -43,82 +53,95 @@ const AnimatedStat = ({ value }: { value: string }) => {
 
   return (
     <div ref={countRef} className="inline-flex items-baseline gap-1">
-      <span className="text-5xl font-display font-black text-primary">{displayValue}</span>
-      <span className="text-5xl font-display font-black text-primary">{suffix}</span>
+      <span className="text-5xl font-display font-black text-primary">
+        {displayValue}
+      </span>
+      <span className="text-5xl font-display font-black text-primary">
+        {suffix}
+      </span>
     </div>
   );
 };
 
 /** Preview 4 — "Brutalist Industrial": Raw, bold typography, asymmetric layout, exposed grid lines */
 const PreviewFour = () => {
-
-
   const SplitServices = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0);
 
-  return (
-    <div className="grid md:grid-cols-2 gap-10 items-stretch">
-
-      {/* LEFT SIDE — SERVICE LIST */}
-      <div className="flex flex-col border border-steel/20">
-        {services.map((s, i) => (
-          <div
-            key={s.title}
-            onMouseEnter={() => setActiveIndex(i)}
-            className={`p-6 sm:p-8 cursor-pointer transition-all border-b border-steel/10 
+    return (
+      <div className="grid md:grid-cols-2 gap-10 items-stretch">
+        {/* LEFT SIDE — SERVICE LIST */}
+        <div className="flex flex-col border border-steel/20">
+          {services.map((s, i) => (
+            <div
+              key={s.title}
+              onMouseEnter={() => setActiveIndex(i)}
+              className={`p-6 sm:p-8 cursor-pointer transition-all border-b border-steel/10 
               ${activeIndex === i ? "bg-navy-light text-white" : "bg-foreground text-steel hover:bg-navy/40"}
             `}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
-                {s.title}
-              </h3>
-              <span className="text-primary/40 font-bold text-lg">
-                0{i + 1}
-              </span>
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
+                  {s.title}
+                </h3>
+                <span className="text-primary/40 font-bold text-lg">
+                  0{i + 1}
+                </span>
+              </div>
             </div>
+          ))}
+        </div>
+
+        {/* RIGHT SIDE — ACTIVE CONTENT */}
+        <div className="relative border-2 border-primary bg-[#0d1220] p-8 sm:p-10 flex flex-col justify-between min-h-[350px]">
+          <div>
+            <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-3">
+              Service Overview
+            </p>
+
+            <h3 className="font-display text-3xl sm:text-4xl font-black mb-4">
+              {services[activeIndex].title}
+            </h3>
+
+            <p className="text-steel text-base sm:text-lg leading-relaxed">
+              {services[activeIndex].description}
+            </p>
           </div>
-        ))}
-      </div>
 
-      {/* RIGHT SIDE — ACTIVE CONTENT */}
-      <div className="relative border-2 border-primary bg-[#0d1220] p-8 sm:p-10 flex flex-col justify-between min-h-[350px]">
-
-        <div>
-          <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-3">
-            Service Overview
-          </p>
-
-          <h3 className="font-display text-3xl sm:text-4xl font-black mb-4">
-            {services[activeIndex].title}
-          </h3>
-
-          <p className="text-steel text-base sm:text-lg leading-relaxed">
-            {services[activeIndex].description}
-          </p>
+          <div className="mt-8">
+            <Link
+              to={`/${services[activeIndex].id}`}
+              className="inline-flex items-center gap-2 uppercase tracking-wider font-bold text-black bg-primary py-3 px-6 border-2 border-secondary-foreground hover:bg-gold-light transition-colors"
+            >
+              Learn More
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
-
-        <div className="mt-8">
-          <Link
-            to={`/${services[activeIndex].id}`}
-            className="inline-flex items-center gap-2 uppercase tracking-wider font-bold text-black bg-primary py-3 px-6 border-2 border-secondary-foreground hover:bg-gold-light transition-colors"
-          >
-            Learn More
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
       </div>
-
-    </div>
-  );
-};
+    );
+  };
   return (
     <div className="min-h-screen bg-foreground font-body text-secondary-foreground overflow-x-hidden">
       {/* Hero — left-aligned with overlaid stats on right */}
       <section className="relative overflow-hidden h-[calc(100dvh-76px)] sm:h-auto sm:min-h-screen md:min-h-[80vh] lg:min-h-[90vh]">
-        <img src={heroImg} alt="Industrial site" className="absolute inset-0 w-full h-full object-cover object-center sm:object-top" />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, hsla(220,25%,8%,0.92) 0%, hsla(220,25%,8%,0.5) 100%)" }} />
+        <img
+          src={heroImg}
+          alt="Industrial site"
+          className="
+    absolute inset-0 w-full h-full
+    object-cover
+    object-[75%_center]   /* KEY FIX */
+    sm:object-top
+  "
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, hsla(220,25%,8%,0.92) 0%, hsla(220,25%,8%,0.5) 100%)",
+          }}
+        />
 
         {/* Desktop stats overlay — positioned absolutely on hero */}
         <div className="hidden lg:flex absolute top-1/3 lg:top-[34%] right-10 transform -translate-y-0 lg:-translate-y-1/4 flex-col h-auto items-start justify-start pointer-events-none gap-6 z-20">
@@ -127,13 +150,19 @@ const PreviewFour = () => {
               key={s.label}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 + i * 0.1, ease: "easeOut" }}
+              transition={{
+                duration: 0.45,
+                delay: 0.1 + i * 0.1,
+                ease: "easeOut",
+              }}
               className="pointer-events-auto px-6 py-5 border border-white/20 rounded-sm bg-navy/40 backdrop-blur-sm hover:border-white/40 transition-colors"
             >
               <div className="text-5xl font-display font-black text-primary">
                 <AnimatedStat value={s.value} />
               </div>
-              <div className="text-steel text-xs uppercase tracking-wider mt-2 whitespace-nowrap">{s.label}</div>
+              <div className="text-steel text-xs uppercase tracking-wider mt-2 whitespace-nowrap">
+                {s.label}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -143,34 +172,57 @@ const PreviewFour = () => {
           <div className="flex-1 flex items-center sm:items-center lg:items-start justify-start lg:justify-start px-6 md:px-12 lg:px-20 pt-0 sm:pt-0 md:pt-12 lg:pt-20 pb-0 sm:pb-0">
             <div className="w-full max-w-6xl">
               <motion.div initial="hidden" animate="visible">
-                <motion.p variants={fadeUp} custom={0} className="text-primary text-xs sm:text-sm md:text-base uppercase tracking-[0.35em] font-bold mb-3">
+                <motion.p
+                  variants={fadeUp}
+                  custom={0}
+                  className="text-primary text-xs sm:text-sm md:text-base uppercase tracking-[0.35em] font-bold mb-3"
+                >
                   PICSARABIA FOR MEASUREMENT CO.
                 </motion.p>
-                <motion.h1 variants={fadeUp} custom={1} className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[5.25rem] 2xl:text-[6.25rem] font-extrabold leading-[1.05] md:leading-[1.02] mb-5 text-left max-w-[clamp(290px,88vw,980px)]">
-                  DEFINING ACCURACY,<br />
+                <motion.h1
+                  variants={fadeUp}
+                  custom={1}
+                  className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[5.25rem] 2xl:text-[6.25rem] font-extrabold leading-[1.05] md:leading-[1.02] mb-5 text-left max-w-[clamp(290px,88vw,980px)]"
+                >
+                  DEFINING ACCURACY,
+                  <br />
                   <span className="text-gradient-gold">DELIVERING TRUST.</span>
                 </motion.h1>
-                <motion.p variants={fadeUp} custom={2} className="text-steel text-base md:text-lg max-w-2xl">
-                  Providing trusted bespoke solutions for the Oil & Gas, Petrochemicals, Power, Manufacturing, Construction, and EPC sectors. Accredited by ISO/IEC 17025 and ISO 9001, we are built on precision, reliability, and fast turnaround.
+                <motion.p
+                  variants={fadeUp}
+                  custom={2}
+                  className="text-steel text-base md:text-lg max-w-2xl"
+                >
+                  Providing trusted bespoke solutions for the Oil & Gas,
+                  Petrochemicals, Power, Manufacturing, Construction, and EPC
+                  sectors. Accredited by ISO/IEC 17025 and ISO 9001, we are
+                  built on precision, reliability, and fast turnaround.
                 </motion.p>
-                <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row items-start gap-4 lg:gap-6 mt-8">
-                  <Link to="/services" className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-10 py-4 sm:px-12 sm:py-5 text-base uppercase tracking-wider hover:bg-gold-light transition-colors">
+                <motion.div
+                  variants={fadeUp}
+                  custom={3}
+                  className="flex flex-col sm:flex-row items-start gap-4 lg:gap-6 mt-8"
+                >
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-10 py-4 sm:px-12 sm:py-5 text-base uppercase tracking-wider hover:bg-gold-light transition-colors"
+                  >
                     <span>Explore Services</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
-
                 </motion.div>
               </motion.div>
             </div>
           </div>
         </div>
-
       </section>
 
       {/* Stats on mobile — next section after hero */}
       <section className="lg:hidden bg-navy/80 backdrop-blur-sm border-t border-steel/20 pt-6">
         <div className="container mx-auto px-6 py-12">
-          <h3 className="text-primary text-sm uppercase tracking-[0.3em] font-bold mb-8">Our Impact</h3>
+          <h3 className="text-primary text-sm uppercase tracking-[0.3em] font-bold mb-8">
+            Our Impact
+          </h3>
           <div className="grid grid-cols-2 gap-8">
             {stats.map((s) => (
               <motion.div
@@ -178,12 +230,18 @@ const PreviewFour = () => {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.45, delay: 0.1 + stats.indexOf(s) * 0.08, ease: "easeOut" }}
+                transition={{
+                  duration: 0.45,
+                  delay: 0.1 + stats.indexOf(s) * 0.08,
+                  ease: "easeOut",
+                }}
               >
                 <div className="text-4xl md:text-5xl font-display font-black text-primary">
                   <AnimatedStat value={s.value} />
                 </div>
-                <div className="text-steel text-xs md:text-sm uppercase tracking-wider mt-2">{s.label}</div>
+                <div className="text-steel text-xs md:text-sm uppercase tracking-wider mt-2">
+                  {s.label}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -204,26 +262,44 @@ const PreviewFour = () => {
             </div>
 
             <div>
-              <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-4">ABOUT PICSARABIA</p>
+              <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-4">
+                ABOUT PICSARABIA
+              </p>
               <h2 className="font-display text-5xl md:text-6xl font-extrabold leading-[1.05] text-white mb-6">
                 Accreditation, Quality, Authority
               </h2>
               <p className="text-steel text-lg leading-relaxed mb-8">
-                PICSARABIA delivers accredited calibration, instrumentation, automation, and industrial services with full support for critical industries across the Kingdom. We drive operational reliability and compliance via ISO/IEC 17025 labs, ISO 9001 processes, and vendor approvals from Saudi Aramco, SABIC, and SEC.
+                PICSARABIA delivers accredited calibration, instrumentation,
+                automation, and industrial services with full support for
+                critical industries across the Kingdom. We drive operational
+                reliability and compliance via ISO/IEC 17025 labs, ISO 9001
+                processes, and vendor approvals from Saudi Aramco, SABIC, and
+                SEC.
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="p-5 bg-navy/80 border border-primary/50 rounded-sm">
-                  <p className="text-3xl font-display font-black text-primary">500+</p>
-                  <p className="text-steel uppercase tracking-wider text-xs">Projects Delivered</p>
+                  <p className="text-3xl font-display font-black text-primary">
+                    500+
+                  </p>
+                  <p className="text-steel uppercase tracking-wider text-xs">
+                    Projects Delivered
+                  </p>
                 </div>
                 <div className="p-5 bg-navy/80 border border-primary/50 rounded-sm">
-                  <p className="text-3xl font-display font-black text-primary">100+</p>
-                  <p className="text-steel uppercase tracking-wider text-xs">Satisfied Industrial Clients</p>
+                  <p className="text-3xl font-display font-black text-primary">
+                    100+
+                  </p>
+                  <p className="text-steel uppercase tracking-wider text-xs">
+                    Satisfied Industrial Clients
+                  </p>
                 </div>
               </div>
 
-              <Link to="/about" className="inline-flex items-center justify-center gap-2 uppercase tracking-wider font-bold text-black bg-primary py-4 px-8 border-2 border-secondary-foreground hover:bg-gold-light transition-colors">
+              <Link
+                to="/about"
+                className="inline-flex items-center justify-center gap-2 uppercase tracking-wider font-bold text-black bg-primary py-4 px-8 border-2 border-secondary-foreground hover:bg-gold-light transition-colors"
+              >
                 More About Us
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -236,7 +312,6 @@ const PreviewFour = () => {
       {/* Services — Split Panel Layout */}
       <section className="py-20 border-b border-steel/10">
         <div className="container mx-auto px-6">
-
           {/* Heading */}
           <div className="mb-12">
             <p className="text-primary text-xs uppercase tracking-[0.3em] font-bold mb-2">
@@ -249,14 +324,15 @@ const PreviewFour = () => {
 
           {/* Split Layout */}
           <SplitServices />
-
         </div>
       </section>
 
       {/* Clients marquee */}
       <section className="py-16 border-b border-steel/10 bg-navy-light/20">
         <div className="container mx-auto px-6 overflow-hidden">
-          <p className="text-steel text-xs uppercase tracking-[0.2em] font-bold mb-6">Trusted By Leading Industries</p>
+          <p className="text-steel text-xs uppercase tracking-[0.2em] font-bold mb-6">
+            Trusted By Leading Industries
+          </p>
           <motion.div
             className="flex gap-8 whitespace-nowrap"
             initial={{ x: 0 }}
@@ -264,16 +340,23 @@ const PreviewFour = () => {
             transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
           >
             {clientsData.map((client) => {
-              const src = new URL(`../assets/clients/${client.file}`, import.meta.url).href;
+              const src = new URL(
+                `../assets/clients/${client.file}`,
+                import.meta.url,
+              ).href;
               return (
-                <div key={client.name} className="flex items-center justify-center px-6 py-4 bg-white rounded-sm min-w-[200px] h-[70px]">
+                <div
+                  key={client.name}
+                  className="flex items-center justify-center px-6 py-4 bg-white rounded-sm min-w-[200px] h-[70px]"
+                >
                   <img
                     src={src}
                     alt={client.name}
                     className="max-h-[50px] max-w-[90%] object-contain"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
-                      const next = e.currentTarget.nextElementSibling as HTMLElement;
+                      const next = e.currentTarget
+                        .nextElementSibling as HTMLElement;
                       if (next) next.style.display = "block";
                     }}
                   />
@@ -284,16 +367,23 @@ const PreviewFour = () => {
               );
             })}
             {clientsData.map((client, idx) => {
-              const src = new URL(`../assets/clients/${client.file}`, import.meta.url).href;
+              const src = new URL(
+                `../assets/clients/${client.file}`,
+                import.meta.url,
+              ).href;
               return (
-                <div key={`dup-${client.name}-${idx}`} className="flex items-center justify-center px-6 py-4 bg-white rounded-sm min-w-[200px] h-[70px]">
+                <div
+                  key={`dup-${client.name}-${idx}`}
+                  className="flex items-center justify-center px-6 py-4 bg-white rounded-sm min-w-[200px] h-[70px]"
+                >
                   <img
                     src={src}
                     alt={client.name}
                     className="max-h-[50px] max-w-[90%] object-contain"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
-                      const next = e.currentTarget.nextElementSibling as HTMLElement;
+                      const next = e.currentTarget
+                        .nextElementSibling as HTMLElement;
                       if (next) next.style.display = "block";
                     }}
                   />
@@ -306,7 +396,6 @@ const PreviewFour = () => {
           </motion.div>
         </div>
       </section>
-
     </div>
   );
 };
